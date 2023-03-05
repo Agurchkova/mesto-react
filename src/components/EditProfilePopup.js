@@ -7,6 +7,7 @@ function EditProfilePopup({ isOpen, onClose }) {
         <PopupWithForm
             name="EditProfilePopup"
             title="Редактировать профиль"
+            btntext="Сохранить"
             isOpen={isOpen}
             onClose={onClose}>
             <label>
@@ -39,11 +40,6 @@ function EditProfilePopup({ isOpen, onClose }) {
                     id="input-job-error">
                 </span>
             </label>
-            <button
-                className="popup__save-button button popup__save-button_disabled"
-                type="submit">
-                Сохранить
-            </button>
         </PopupWithForm >
     );
 };

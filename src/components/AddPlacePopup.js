@@ -7,6 +7,7 @@ function AddPlacePopup({ isOpen, onClose }) {
         <PopupWithForm
             name="AddPlacePopup"
             title="Новое место"
+            btntext="Создать"
             isOpen={isOpen}
             onClose={onClose}>
             <label>
@@ -37,10 +38,6 @@ function AddPlacePopup({ isOpen, onClose }) {
                     id="input-url-error">
                 </span>
             </label>
-            <button
-                className="popup__save-button button popup__save-button_disabled"
-                type="submit">Создать
-            </button>
         </PopupWithForm>
 
     );
