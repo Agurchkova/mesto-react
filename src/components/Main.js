@@ -3,9 +3,9 @@ import api from "../utils/api";
 import Card from "./Card"
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-    const [userName, setUserName] = useState(false);
-    const [userDescription, setUserDescription] = useState(false);
-    const [userAvatar, setUserAvatar] = useState({});
+    const [userName, setUserName] = useState("");
+    const [userDescription, setUserDescription] = useState("");
+    const [userAvatar, setUserAvatar] = useState("");
     const [cards, setCards] = useState([]);
 
     useEffect(() => {
