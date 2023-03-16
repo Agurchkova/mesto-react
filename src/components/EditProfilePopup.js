@@ -1,15 +1,49 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, onLoading }) {
+    const currentUser = useContext(CurrentUserContext);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+
+    useEffect(() => {
+        if (isOpen) {
+            setName(currentUser.name);
+            setDescription(currentUser.about);
+        }
+    }, [currentUser, isOpen]);
+
+    function handleNameChange(event) {
+        setName(event.target.value);
+    }
+
+    function handleDescriptionChange(event) {
+        setDescription(event.target.value);
+    }
+
+    function handleSubmit(e) {
+        // Запрещаем браузеру переходить по адресу формы
+        e.preventDefault();
+
+        // Передаём значения управляемых компонентов во внешний обработчик
+        onUpdateUser({
+            name,
+            about: description,
+        });
+    }
 
     return (
         <PopupWithForm
             name="EditProfilePopup"
             title="Редактировать профиль"
-            btntext="Сохранить"
+            btnText="Сохранить"
+            loadingTxt="Сохранение..."
             isOpen={isOpen}
-            onClose={onClose}>
+            onClose={onClose}
+            onSubmit={handleSubmit}
+            onLoading={onLoading}
+        >
             <label>
                 <input
                     className="popup__input popup__input_type_name"
@@ -19,7 +53,10 @@ function EditProfilePopup({ isOpen, onClose }) {
                     minLength="2"
                     maxLength="40"
                     id="input-name"
-                    required />
+                    required
+                    value={name}
+                    onChange={handleNameChange}
+                />
                 <span
                     className="popup__input-error"
                     id="input-name-error">
@@ -34,7 +71,10 @@ function EditProfilePopup({ isOpen, onClose }) {
                     minLength="2"
                     maxLength="200"
                     id="input-job"
-                    required />
+                    required
+                    value={description}
+                    onChange={handleDescriptionChange}
+                />
                 <span
                     className="popup__input-error"
                     id="input-job-error">

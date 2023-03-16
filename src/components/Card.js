@@ -1,18 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Card({ card, onCardClick }) {
+function Card({ card, onCardClick, onCardLike, onCardDeleteClick }) {
+    const currentUser = useContext(CurrentUserContext);
+    // Определяем, являемся ли мы владельцем текущей карточки
+    const isOwn = card.owner._id === currentUser._id;
+    // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    // Создаём переменную, которую после зададим в `className` для кнопки лайка
+    const cardLikeButtonClassName = (
+        `photo-gallery__like-button ${isLiked && 'photo-gallery__like-button_active'}`
+    );
 
     function handleClick() {
         onCardClick(card);
-    }
+    };
+
+    function handleDeleteClick() {
+        onCardDeleteClick(card._id);
+    };
+
+    function handleLikeClick() {
+        onCardLike(card);
+    };
 
     return (
         <figure className="photo-gallery__container">
-            <button
-                type="button"
+            {isOwn && <button type="button"
                 className="photo-gallery__trash-button button"
-                aria-label="Удалить">
-            </button>
+                onClick={handleDeleteClick}
+            />
+            }
             <button
                 className="photo-gallery__item-button"
                 type="button"
@@ -28,10 +46,13 @@ function Card({ card, onCardClick }) {
                 <div className="photo-gallery__likes-area">
                     <button
                         type="button"
-                        className="photo-gallery__like-button button"
-                        aria-label="Добавить в избранное">
-                    </button>
-                    <span className="photo-gallery__like-counter">{card.likes.length}</span>
+                        className={cardLikeButtonClassName}
+                        onClick={handleLikeClick}
+                    />
+                    <span
+                        className="photo-gallery__like-counter">
+                        {card.likes.length}
+                    </span>
                 </div>
             </figcaption>
         </figure>

@@ -36,8 +36,8 @@ class Api {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
-                name: data.username,
-                about: data.job
+                name: data.name,
+                about: data.about
             })
         })
             .then(res => this._checkResponse(res));
@@ -93,6 +93,14 @@ class Api {
             headers: this._headers,
         })
             .then(res => this._checkResponse(res));
+    }
+    // поддержка лайков и дизлайков
+    changeLikeCardStatus(itemId, isLiked) {
+        return fetch(`${this._baseUrl}/cards/${itemId}/likes`, {
+            method: `${!isLiked ? 'DELETE' : 'PUT'}`,
+            headers: this._headers,
+        })
+            .then((res) => this._checkResponse(res));
     }
 
 }

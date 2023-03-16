@@ -7,7 +7,8 @@ function Header() {
             <img
                 src={logoHeader}
                 className="header__logo"
-                alt="Логотип Место Россия" />
+                alt="Логотип Место Россия"
+            />
         </header>
     );
 }
