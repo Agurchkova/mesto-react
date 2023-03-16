@@ -46,6 +46,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading, onCloseEsc, onC
                 <input
                     className="popup__input popup__input_type_nameAdd"
                     required
+                    value={title}
                     type="text"
                     placeholder="Название"
                     name="name"
@@ -61,6 +62,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading, onCloseEsc, onC
             <label>
                 <input
                     className="popup__input popup__input_type_urlAdd"
+                    value={link}
                     type="url"
                     placeholder="Ссылка на картинку"
                     name="link"
