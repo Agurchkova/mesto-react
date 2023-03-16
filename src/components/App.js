@@ -183,8 +183,6 @@ function App() {
         <ImagePopup
           card={selectedCard}
           onClose={closeAllPopups}
-          onCloseOverlay={closeByClickOnOverlay}
-          onCloseEsc={closePopupByEsc}
         />
         <ConfirmationDltPopup
           isOpen={isConfirmationDltPopupOpen}

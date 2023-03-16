@@ -1,10 +1,28 @@
-function ConfirmationDltPopup({ isOpen, onClose, card, onSubmit, onLoading }) {
+import { useEffect } from "react";
+
+function ConfirmationDltPopup({ isOpen, onClose, card, onSubmit, onLoading, onCloseEsc, onCloseOverlay }) {
 
     function handleConfirmiation(event) {
         event.preventDefault();
         onSubmit(card);
         onClose();
     };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('keydown', onCloseEsc);
+        } else {
+            document.removeEventListener('keydown', onCloseEsc);
+        }
+    }, [isOpen])
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('mousedown', onCloseOverlay);
+        } else {
+            document.removeEventListener('mousedown', onCloseOverlay);
+        }
+    }, [isOpen])
 
     return (
         <div className={`popup popup_type_confirmation ${isOpen ? "popup_opened" : ""}`}>
