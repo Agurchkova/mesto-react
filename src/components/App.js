@@ -23,19 +23,10 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    api.getUserInfo()
-      .then((userData) => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([userData, card]) => {
         setCurrentUser(userData);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then((card) => {
-        setCards(card)
+        setCards(card);
       })
       .catch((err) => {
         console.error(err);
