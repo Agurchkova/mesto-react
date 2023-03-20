@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDeleteClick, cards }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick,
+    onCardLike, onCardDeleteClick, cards }) {
     const currentUser = useContext(CurrentUserContext);
     const { name, about, avatar } = currentUser;
 
@@ -11,13 +12,11 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike
             <section className="profile">
                 <img
                     className="profile__avatar"
-                    style={{ backgroundImage: `url(${avatar})` }}
                     src={avatar}
                     alt="Аватар профиля" />
                 <button
                     className="profile__avatar-edit-button"
-                    onClick={onEditAvatar}>
-                </button>
+                    onClick={onEditAvatar} />
                 <div className="profile__info">
                     <h1 className="profile__title">{name}</h1>
                     <p className="profile__subtitle">{about}</p>
@@ -25,15 +24,13 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike
                         type="button"
                         className="profile__edit-button button"
                         aria-label="редактировать профиль"
-                        onClick={onEditProfile}>
-                    </button>
+                        onClick={onEditProfile} />
                 </div>
                 <button
                     type="button"
                     className="profile__add-button button"
                     aria-label="добавить фотографию"
-                    onClick={onAddPlace}>
-                </button>
+                    onClick={onAddPlace} />
             </section>
             <section className="photo-gallery" aria-label="фото-галерея">
                 <ul className="photo-gallery__items">

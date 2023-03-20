@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
+import useForm from "../hooks/useForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading, onCloseEsc, onCloseOverlay }) {
-    const [title, setTitle] = useState('');
-    const [link, setLink] = useState('');
+function AddPlacePopup({ isOpen, onClose, onAddPlace,
+    onLoading }) {
+    const { values, handleChange, resetForm } = useForm();
 
     useEffect(() => {
-        if (isOpen) {
-            setTitle('');
-            setLink('');
-        }
-    }, [isOpen])
-
-    function handleTitleChange(event) {
-        setTitle(event.target.value);
-    }
-
-    function handleLinkChange(event) {
-        setLink(event.target.value);
-    }
+        resetForm();
+    }, [resetForm, isOpen]);
 
     function handleSubmit(event) {
         event.preventDefault();
 
         onAddPlace({
-            name: title,
-            link: link
+            name: values.name,
+            link: values.link
         });
     };
 
@@ -39,40 +29,38 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading, onCloseEsc, onC
             onClose={onClose}
             onSubmit={handleSubmit}
             onLoading={onLoading}
-            onCloseEsc={onCloseEsc}
-            onCloseOverlay={onCloseOverlay}
         >
             <label>
                 <input
                     className="popup__input popup__input_type_nameAdd"
                     required
-                    value={title}
+                    value={values.name || ''}
                     type="text"
                     placeholder="Название"
                     name="name"
                     minLength="2"
                     maxLength="30"
                     id="input-title"
-                    onChange={handleTitleChange} />
+                    onChange={handleChange}
+                />
                 <span
                     className="popup__input-error"
-                    id="input-title-error">
-                </span>
+                    id="input-title-error" />
             </label>
             <label>
                 <input
                     className="popup__input popup__input_type_urlAdd"
-                    value={link}
+                    value={values.link || ''}
                     type="url"
                     placeholder="Ссылка на картинку"
                     name="link"
                     id="input-url"
                     required
-                    onChange={handleLinkChange} />
+                    onChange={handleChange}
+                />
                 <span
                     className="popup__input-error"
-                    id="input-url-error">
-                </span>
+                    id="input-url-error" />
             </label>
         </PopupWithForm>
     );

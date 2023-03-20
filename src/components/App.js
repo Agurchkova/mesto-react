@@ -41,6 +41,40 @@ function App() {
     setSelectedCard({});
   };
 
+  /////////////////
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
+    isAddPlacePopupOpen || selectedCard.link || isConfirmationDltPopupOpen;
+
+  useEffect(() => {
+    function closePopupByEsc(evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) { // навешиваем только при открытии
+      document.addEventListener('keydown', closePopupByEsc);
+      return () => {
+        document.removeEventListener('keydown', closePopupByEsc);
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    function closeByClickOnOverlay(event) {
+      if (event.target.classList.contains('popup_opened')) {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) { // навешиваем только при открытии
+      document.addEventListener('mousedown', closeByClickOnOverlay);
+      return () => {
+        document.removeEventListener('mousedown', closeByClickOnOverlay);
+      }
+    }
+  }, [isOpen]);
+
+  /////////////////
+
   const handleCardClick = (card) => {
     setSelectedCard(card);
   };
@@ -63,16 +97,19 @@ function App() {
     setIsLoading(true);
     api.deleteItem(itemId).then(() => {
       setCards((cards) => cards.filter((card) => card._id !== itemId));
+      closeAllPopups();
     })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   function handleUpdateUser(data) {
     setIsLoading(true);
     api.editUserData(data).then((newUser) => {
-      setIsLoading(true);
       setCurrentUser(newUser);
       closeAllPopups();
     })
@@ -121,17 +158,7 @@ function App() {
     setDeletedItemId(itemId);
   };
 
-  function closeByClickOnOverlay(event) {
-    if (event.target.classList.contains('popup_opened')) {
-      closeAllPopups();
-    }
-  };
 
-  function closePopupByEsc(event) {
-    if (event.key === 'Escape') {
-      closeAllPopups();
-    }
-  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -152,24 +179,18 @@ function App() {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
           onLoading={isLoading}
-          onCloseOverlay={closeByClickOnOverlay}
-          onCloseEsc={closePopupByEsc}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
           onLoading={isLoading}
-          onCloseOverlay={closeByClickOnOverlay}
-          onCloseEsc={closePopupByEsc}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
           onLoading={isLoading}
-          onCloseOverlay={closeByClickOnOverlay}
-          onCloseEsc={closePopupByEsc}
         />
         <ImagePopup
           card={selectedCard}
@@ -181,8 +202,6 @@ function App() {
           onSubmit={handleCardDelete}
           card={deletedItemId}
           onLoading={isLoading}
-          onCloseOverlay={closeByClickOnOverlay}
-          onCloseEsc={closePopupByEsc}
         />
       </div>
     </CurrentUserContext.Provider>
